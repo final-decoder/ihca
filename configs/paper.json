@@ -1,0 +1,27 @@
+{
+  "model": {
+    "channels": [32, 64, 128, 256],
+    "kernels": [7, 15, 31],
+    "attention_dim": 128,
+    "attention_heads": 4,
+    "ecg_embedding": 256,
+    "clinical_hidden": [64, 128],
+    "fusion_hidden": [128, 64],
+    "waveform_dropout": 0.3,
+    "fusion_dropout": 0.5,
+    "mode": "full"
+  },
+  "training": {
+    "seed": 42,
+    "folds": 5,
+    "inner_fraction": 0.2,
+    "batch_size": 64,
+    "epochs": 100,
+    "learning_rate": 0.001,
+    "weight_decay": 0.01,
+    "patience": 15,
+    "min_delta": 0.0001,
+    "bootstrap": 2000,
+    "threads": 4
+  }
+}

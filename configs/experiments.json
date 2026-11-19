@@ -1,0 +1,26 @@
+{
+  "paths": {
+    "development": "../data/development.npz",
+    "external": "../data/external.npz",
+    "development_metadata": "../data/development.csv",
+    "external_metadata": "../data/external.csv",
+    "external_predictions": "../outputs/external/predictions.csv",
+    "candidate_data": "../data/candidates.npz",
+    "candidate_metadata": "../data/candidates.csv"
+  },
+  "models": {
+    "full": "../outputs/full", "clinical": "../outputs/clinical",
+    "structured": "../outputs/structured", "waveform": "../outputs/waveform"
+  },
+  "seed": 42, "bootstrap": 2000, "paired_bootstrap": 1000,
+  "controls_per_case": [1, 2, 5, 10, 20],
+  "incidence_per_1000": [0.5, 1, 2, 5, 10, 20],
+  "permutations": 32, "threads": 2, "batch_size": 16,
+  "clinical_rules": {
+    "news_positive": 5, "apache_positive": 15, "ecg_positive": 1,
+    "qtc_male_ms": 450, "qtc_female_ms": 460, "tpeak_tend_ms": 100,
+    "ecg_weights": {"qrs_t_above_90": 1, "prolonged_qtc": 1, "prolonged_tpeak_tend": 1}
+  },
+  "random_forest": {"n_estimators": 300, "min_samples_leaf": 3, "max_features": "sqrt"},
+  "xgboost": {"n_estimators": 200, "max_depth": 3, "learning_rate": 0.05, "subsample": 0.9, "colsample_bytree": 0.9}
+}

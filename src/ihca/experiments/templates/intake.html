@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>IHCA research assessment</title><link rel="stylesheet" href="{{ url_for('static',filename='research.css') }}"></head>
+<body><header><span class="brand">IHCA</span> Multimodal ECG research</header><main>
+<h1>ECG assessment</h1><p>Enter the measurements available at ECG acquisition to score one recording with the frozen ensemble.</p>
+<form method="post" action="/predict" enctype="multipart/form-data">
+<section><h2>Recording</h2><div class="grid">
+<label class="wide">12-lead ECG · calibrated XML<input type="file" name="waveform" accept=".xml" required></label>
+<label>Research participant ID<input name="patient_id" required></label>
+<label>Acquisition quality (0–100)<input type="number" name="quality_score" min="80" max="100" step="any" required></label>
+<label>ECG acquisition time<input type="datetime-local" name="ecg_time" required></label>
+<label>Latest clinical input time<input type="datetime-local" name="clinical_time" required></label>
+</div></section>
+<section><h2>Clinical measurements</h2><div class="grid">
+{% for key in clinical %}<label>{{ key | replace('_',' ') | capitalize }}
+{% if key in binary %}<select name="{{ key }}" required><option value="">Select</option><option value="0">{{ 'Female' if key=='sex' else 'Absent' }}</option><option value="1">{{ 'Male' if key=='sex' else 'Present' }}</option></select>
+{% else %}<input type="number" step="any" name="{{ key }}" required>{% endif %}</label>{% endfor %}
+</div></section><section><details><summary>Structured ECG measurements</summary><p>Leave fields empty to use the measurements in the XML file.</p>
+<div class="grid">{% for key in ecg %}<label>{{ key | replace('_',' ') }}<input type="number" step="any" name="{{ key }}"></label>{% endfor %}</div></details></section>
+<div class="actions"><button type="submit">Calculate assessment</button><button class="secondary" type="submit" formaction="/predict?download=1">Download report</button></div>
+</form></main></body></html>

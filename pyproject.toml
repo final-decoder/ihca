@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ihca-multimodal"
+version = "0.3.0"
+description = "Multimodal ECG and clinical learning for IHCA discrimination"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = ["numpy>=1.24,<3", "torch>=2.1,<3", "scikit-learn>=1.3,<2"]
+
+[project.optional-dependencies]
+test = ["pytest>=7,<10"]
+experiments = ["pandas>=2,<4", "matplotlib>=3.7,<4", "xgboost>=2,<4", "flask>=3,<4", "joblib>=1.3,<2"]
+
+[project.scripts]
+ihca = "ihca.cli:main"
+ihca-experiments = "ihca.experiments.cli:main"
+
+[tool.setuptools.package-data]
+"ihca.experiments" = ["templates/*.html", "static/*.css"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra -p no:cacheprovider"

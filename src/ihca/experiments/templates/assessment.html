@@ -1,0 +1,14 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>IHCA research report</title><style>{{ css | safe }}</style></head>
+<body><header><span class="brand">IHCA</span> Multimodal ECG research</header><main id="report" data-score="{{ score }}" data-threshold="{{ threshold }}">
+<h1>Research assessment</h1><p>{{ patient }} · {{ date }} · {{ folds }} frozen models</p>
+<section class="scores"><div><h2>Discrimination score</h2><b>{{ '%.4f' | format(score) }}</b></div><div><h2>Operating threshold</h2><b>{{ '%.4f' | format(threshold) }}</b></div></section>
+<p class="status">{{ 'At or above' if score >= threshold else 'Below' }} the operating threshold. The score measures discrimination in a matched case-control design.</p>
+<section><h2>Input completeness</h2><p>12 ECG leads · 10 seconds at 500 Hz · {{ clinical_count }} clinical variables · 13 structured ECG features</p></section>
+<section><h2>Structured feature contributions</h2><p>Values show changes in the ensemble score relative to the fold-specific reference measurements, keeping this waveform fixed. Mean reference score {{ '%.5f' | format(base) }}.</p>
+<table><thead><tr><th>Feature</th><th>Magnitude</th><th>Contribution</th></tr></thead><tbody>
+{% for key,value,width in features %}<tr><td>{{key | replace('_',' ')}}</td><td><span class="bar {{ 'negative' if value<0 else '' }}" style="width:{{'%.1f'|format(width)}}%"></span></td><td>{{'%+.5f'|format(value)}}</td></tr>{% endfor %}</tbody></table></section>
+{% if not download %}<div class="actions"><button onclick="window.print()">Print report</button><button class="secondary" id="save">Download report</button><a href="/">New assessment</a></div>
+<script>document.getElementById("save").onclick = () => { const node = document.documentElement.cloneNode(true); node.querySelector(".actions").remove(); node.querySelector("script").remove(); const url = URL.createObjectURL(new Blob(["<!doctype html>"+node.outerHTML], {type:"text/html"})); const a = document.createElement("a"); a.href=url; a.download="ihca-research-report.html"; a.click(); setTimeout(()=>URL.revokeObjectURL(url),1000); };</script>{% endif %}
+</main></body></html>
